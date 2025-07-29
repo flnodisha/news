@@ -1,15 +1,54 @@
-<div class="news-date">Tuesday, July 29, 2025</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Shorts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<div class="news-article">
-    <div class="news-heading">Breaking: Major Tech Breakthrough Announced</div>
-    <div class="news-content">
-        Scientists at a leading research institute have announced a groundbreaking discovery that could revolutionize renewable energy. The new technology promises to increase solar panel efficiency by 40% while reducing manufacturing costs significantly.
-    </div>
-</div>
+    <main id="news-container">
 
-<div class="news-article">
-    <div class="news-heading">Global Climate Summit Reaches Historic Agreement</div>
-    <div class="news-content">
-        World leaders have reached a unanimous agreement on new climate targets for 2030. The comprehensive plan includes ambitious goals for carbon reduction and significant investments in green technology across participating nations.
+        <section class="news-short">
+            <img class="news-image" src="https://images.unsplash.com/photo-1664575198263-269a022d2e13?q=80&w=2070&auto=format&fit=crop" alt="AI Robot">
+            <div class="news-content">
+                <h2>AI Breakthrough in Medicine</h2>
+                <p>Researchers have developed a new AI model that can predict disease outbreaks with over 90% accuracy by analyzing anonymous health data and environmental factors. This could revolutionize public health response times.</p>
+            </div>
+        </section>
+
+        <section class="news-short">
+            <img class="news-image" src="https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?q=80&w=2070&auto=format&fit=crop" alt="Global climate summit">
+            <div class="news-content">
+                <h2>Global Summit Pledges Climate Action</h2>
+                <p>Leaders from 50 nations have signed a landmark agreement to triple renewable energy capacity by 2030. The "Green Future" pact aims to accelerate the transition away from fossil fuels and fund green technology in developing countries.</p>
+            </div>
+        </section>
+
+        <section class="news-short">
+            <img class="news-image" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop" alt="Mars Rover">
+            <div class="news-content">
+                <h2>NASA's 'Odyssey' Rover Finds Water Ice on Mars</h2>
+                <p>In a historic discovery, the Odyssey rover has confirmed the presence of significant subsurface water ice deposits in the Martian mid-latitudes. This finding dramatically increases the potential for future human habitats on the Red Planet.</p>
+            </div>
+        </section>
+
+        <section class="news-short">
+            <img class="news-image" src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=1935&auto=format&fit=crop" alt="Football match">
+            <div class="news-content">
+                <h2>Underdogs Clinch Championship in Final Seconds</h2>
+                <p>In a stunning upset, the Northwood Wolves won the National Championship with a last-second goal, concluding a fairy-tale season that saw them defy all odds. The final score was 3-2 against the reigning champions.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="nav-controls">
+        <button id="prev-btn" title="Previous (Up Arrow)">▲</button>
+        <button id="next-btn" title="Next (Down Arrow)">▼</button>
     </div>
-</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
