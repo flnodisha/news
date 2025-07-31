@@ -2,707 +2,106 @@
 <html lang="or">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Current Affairs Quiz - ସାମ୍ପ୍ରତିକ ଘଟଣା ପ୍ରଶ୍ନୋତ୍ତର</title>
+    <title>ଆଜିର ଖବର</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            font-family: "Noto Sans Oriya", sans-serif;
+            background-color: #f2f2f2;
+            padding: 10px;
         }
-
-        .quiz-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quiz-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            background-size: 400% 400%;
-            animation: gradientShift 3s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .quiz-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .progress-container {
-            background: #ecf0f1;
-            height: 8px;
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-
-        .question-counter {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .question-card {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .question-card.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .question {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            line-height: 1.5;
-            text-align: left;
-        }
-
-        .options {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .option {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 15px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .option:hover {
-            border-color: #3498db;
-            background: #e3f2fd;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
-        }
-
-        .option:hover::before {
-            left: 100%;
-        }
-
-        .option.selected {
-            background: #3498db;
-            color: white;
-            border-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .option.correct {
-            background: #27ae60;
-            border-color: #229954;
-            color: white;
-        }
-
-        .option.incorrect {
-            background: #e74c3c;
-            border-color: #c0392b;
-            color: white;
-        }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn.next {
-            background: linear-gradient(135deg, #27ae60, #229954);
-        }
-
-        .btn.next:hover {
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
-        }
-
-        .results {
-            display: none;
-            text-align: center;
-        }
-
-        .results.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: conic-gradient(#27ae60 0deg, #27ae60 var(--score-angle, 0deg), #ecf0f1 var(--score-angle, 0deg));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-
-        .score-circle::before {
-            content: '';
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        .score-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            z-index: 1;
-        }
-
-        .performance {
-            font-size: 18px;
-            margin: 20px 0;
-            color: #7f8c8d;
-        }
-
-        .explanation-section {
-            margin-top: 40px;
-            text-align: left;
-        }
-
-        .explanation-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .explanation-item {
-            background: #f8f9fa;
-            border-left: 4px solid #3498db;
+        .news-tile {
+            background-color: #ffffff;
             padding: 15px;
             margin-bottom: 15px;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .explanation-question {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-
-        .explanation-answer {
-            color: #27ae60;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .explanation-text {
-            color: #7f8c8d;
-            line-height: 1.5;
-        }
-
-        .restart-btn {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            margin-top: 30px;
-        }
-
-        .restart-btn:hover {
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
-        }
-
-        @media (max-width: 768px) {
-            .quiz-container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            .quiz-title {
-                font-size: 24px;
-            }
-            
-            .question {
-                font-size: 18px;
-            }
-            
-            .option {
-                padding: 12px 15px;
-                font-size: 14px;
-            }
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 18px;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <div class="header">
-            <h1 class="quiz-title">ସାମ୍ପ୍ରତିକ ଘଟଣା ପ୍ରଶ୍ନୋତ୍ତର</h1>
-            <h2 style="font-size: 18px; color: #7f8c8d;">Current Affairs Quiz</h2>
-        </div>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
+<div class="news-tile">
+    ୧-ଭୁବନେଶ୍ୱର:ବାଲେଶ୍ୱର, ଭଦ୍ରକ ଓ ଯାଜପୁର ଜିଲ୍ଲାର  ବନ୍ୟାରେ ୩୦ ହଜାର ଲୋକ ପ୍ରଭାବିତ,୫୮୬୯ ଜଣ ଲୋକଙ୍କୁ ସୁରକ୍ଷିତ ସ୍ଥାନକୁ ସ୍ଥାନାନ୍ତର, ୭ ଦିନ ପର୍ଯ୍ୟନ୍ତ ଦିଆଯିବ ରନ୍ଧା ଖାଦ୍ୟ।କାର ।
+</div>
 
-        <div class="question-counter" id="questionCounter">
-            ପ୍ରଶ୍ନ 1 of 14
-        </div>
+<div class="news-tile">
+    ୨-ଆରଆଇ ଅମିନ ମିଳିତ ପ୍ରିଲିମ୍‌ ଓ ମୁଖ୍ୟ ପରୀକ୍ଷା ରଦ୍ଦ, ଅଗଷ୍ଟ ୧୩ ସୁଦ୍ଧା ସାନି ବିଜ୍ଞପ୍ତି।ପୂର୍ବରୁ ଆବେଦନ କରିଥିବା ପ୍ରାର୍ଥୀମାନଙ୍କୁ ଆଉ ଆବେଦନ କରିବାକୁ ପଡିବ ନାହିଁ। ଜାରି ।
+</div>
 
-        <div id="quizContent">
-            <!-- Questions will be dynamically inserted here -->
-        </div>
+<div class="news-tile">
+    ୩-ଓଟିଇଟି ପ୍ରଶ୍ନପତ୍ର ଲିକ୍ ମାମଲା:୬ ଜଣ ଗିରଫ, ବୋର୍ଡ ଉପସଭାପତିଙ୍କ ଲାପଟପ୍ ରୁ ପ୍ରଘଟ,ଡାଟା ଏଣ୍ଟ୍ରି ଅପରେଟର ଜିତନ ମହାରଣା ମୁଖ୍ୟ ଅଭିଯୁକ୍ତ। ।
+</div>
 
-        <div class="nav-buttons" id="navButtons">
-            <button class="btn" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
-            <button class="btn next" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
-        </div>
+<div class="news-tile">
+    ୪-ବନ୍ୟା ପାଣିରେ ‘ସାପ କାମୁଡାକୁ’ ଡର; ଜନସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ସତର୍କ ସୂଚନା ଜାରି,ସାପ କାମୁଡ଼ିଲେ ତୁରନ୍ତ ମେଡିକାଲ ଯିବାକୁ ସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ପରାମର୍ଶ।
+</div>
 
-        <div class="results" id="results">
-            <h2 style="color: #2c3e50; margin-bottom: 30px;">Your Results</h2>
-            <div class="score-circle" id="scoreCircle">
-                <div class="score-text" id="scoreText">0/14</div>
-            </div>
-            <div class="performance" id="performance"></div>
-            <button class="btn restart-btn" onclick="restartQuiz()">Restart Quiz</button>
-            
-            <div class="explanation-section">
-                <h3 class="explanation-title">Detailed Explanations</h3>
-                <div id="explanations"></div>
-            </div>
-        </div>
-    </div>
+<div class="news-tile">
+    ୫-ଭୁବନେଶ୍ୱର:୧୬ରୁ ଭୁବନେଶ୍ୱର -ଝାରସୁଗୁଡା ବିମାନ ସେବା ଆରମ୍ଭ, ସପ୍ତାହକୁ ୫ ଦିନ ଚାଲିବ।
+</div>
 
-    <script>
-        const questions = [
-            {
-                question: "କାର୍ଗିଲ୍ ବିଜୟ ଦିବସ ପ୍ରତି ବର୍ଷ କେବେ ପାଳନ କରାଯାଏ?<br>(When is Kargil Vijay Diwas celebrated every year?)",
-                options: [
-                    "୧୫ ଅଗଷ୍ଟ | 15 August",
-                    "୨୬ ଜୁଲାଇ | 26 July",
-                    "୨ ଅକ୍ଟୋବର | 2 October",
-                    "୨୫ ଜାନୁଆରୀ | 25 January"
-                ],
-                correct: 1,
-                explanation: "କାର୍ଗିଲ୍ ବିଜୟ ଦିବସ ପ୍ରତିବଚର ୨୬ ଜୁଲାଇରେ ପାଳନ କରାଯାଏ ବୋଲି ୧୯୯୯ ମସିହାର କାର୍ଗିଲ୍ ଯୁଦ୍ଧରେ ଭାରତୀୟ ସେନାଙ୍କ ଶୌର୍ଯ୍ୟକୁ ସ୍ମରଣ କରିଥାଏ।"
-            },
-            {
-                question: "ଭାରତ କେଉଁ ଦେଶର ନାଗରିକଙ୍କ ପାଇଁ ପାଞ୍ଚ ବର୍ଷ ପରେ ଫେରି ଟୁରିଷ୍ଟ ଭିଜା ଆରମ୍ଭ କରିଛି?<br>(India has resumed tourist visas for which country after five years?)",
-                options: [
-                    "ଆମେରିକା | USA",
-                    "ଜାପାନ | Japan",
-                    "ଚୀନ୍ | China",
-                    "ପାକିସ୍ତାନ୍ | Pakistan"
-                ],
-                correct: 2,
-                explanation: "COVID-19 ପରେ ଚୀନ୍ ନାଗରିକଙ୍କ ପାଇଁ ବନ୍ଦ ହୋଇଥିବା ଟୁରିଷ୍ଟ ଭିଜା ସେବା ୫ ବର୍ଷ ପରେ ଆରମ୍ଭ କରାଯାଇଛି।"
-            },
-            {
-                question: "ଟ୍ରେସର୍ସ୍ (TRACERS) ମିଶନ୍ କେଉଁ ସଂସ୍ଥା ଆରମ୍ଭ କରିଛି, ଯାହା ଅନ୍ତରିକ୍ଷ ଝଡ଼ରୁ ପୃଥିବୀକୁ ବଞ୍ଚାଇବାକୁ ଅଧ୍ୟୟନ କରିବ?<br>(Who launched the TRACERS mission to study Earth's defense against space storms?)",
-                options: [
-                    "ISRO",
-                    "ESA",
-                    "JAXA",
-                    "NASA"
-                ],
-                correct: 3,
-                explanation: "NASA TRACERS ମିଶନ୍ ଆରମ୍ଭ କରିଛି, ଯେଉଁଥିରେ ଅନ୍ତରିକ୍ଷ ଝଡ଼ ଏବଂ ପୃଥିବୀର ଚୁମ୍ବକ ରକ୍ଷା ସମ୍ପର୍କରେ ଉପଲବ୍ଧି କରାଯିବ।"
-            },
-            {
-                question: "ଏମାନେ ନରେନ୍ଦ୍ର ମୋଦି ଭାରତର ସର୍ବଦିଘା ଦିନ ସେବା ଦେଇଥିବା କେତେନ୍ ମ କ୍ରମର ପ୍ରଧାନମନ୍ତ୍ରୀ ହୋଇଛନ୍ତି?<br>(Recently, Narendra Modi became which number in India's longest-serving PM list?)",
-                options: [
-                    "ପ୍ରଥମ | First",
-                    "ଦ୍ଵିତୀୟ | Second",
-                    "ତୃତୀୟ | Third",
-                    "ଚତୁର୍ଥ | Fourth"
-                ],
-                correct: 1,
-                explanation: "ଜବାହରଲାଲ ନେହେରୁ ପରେ ନରେନ୍ଦ୍ର ମୋଦି ଦ୍ଵିତୀୟ ସର୍ବଦିଘା ସର୍ଭିସ୍ ଦେଇଥିବା ପ୍ରଧାନମନ୍ତ୍ରୀ ହୋଇଛନ୍ତି।"
-            },
-            {
-                question: "କେଉଁ G7 ଦେଶ 2025 ସେପ୍ଟେମ୍ବରରେ ପାଲେଷ୍ଟାଇନକୁ ସ୍ୱୀକୃତି ଦେବାକୁ ଘୋଷଣା କରିଛି?<br>(Which G7 country announced recognition of Palestine in September 2025?)",
-                options: [
-                    "ଇଟାଲି | Italy",
-                    "ଜର୍ମାନୀ | Germany",
-                    "ଫ୍ରାନ୍ସ | France",
-                    "ଜାପାନ | Japan"
-                ],
-                correct: 2,
-                explanation: "ଫ୍ରାନ୍ସ ସେପ୍ଟେମ୍ବର 2025 ରୁ ପାଲେଷ୍ଟାଇନକୁ ସର୍ବେସ୍ୱୀକୃତି ଦେବା ଘୋଷଣା କରିଛି।"
-            },
-            {
-                question: "ହଲ୍କ ହୋଗନ୍ କେଉଁ କ୍ରୀଡା ସାଙ୍ଗରେ ସମ୍ପୃକ୍ତ ଥିଲେ ଯିଏ ଏମିତି ମୃତ୍ୟୁ ବରଣ କଲେ?<br>(Hulk Hogan, who recently passed away, was associated with which sport?)",
-                options: [
-                    "ମୁକ୍କେବାଜି | Boxing",
-                    "ଟେନିସ୍ | Tennis",
-                    "କୁସ୍ତି | Wrestling",
-                    "ଫୁଟବଲ୍ | Football"
-                ],
-                correct: 2,
-                explanation: "ହଲ୍କ ହୋଗନ୍ ଜଣେ ପ୍ରସିଦ୍ଧ ଆମେରିକୀୟ କୁସ୍ତି ଖେଳାଳି ଥିଲେ, ଯିଏ ୭୧ ବର୍ଷ ବୟସରେ ଦେହାନ୍ତ କରିଛନ୍ତି।"
-            },
-            {
-                question: "2025 ସମୁଦ୍ର ଅର୍ଥ ଅଧିବେଶନ କେଉଁ ସ୍ଥାନରେ ଅନୁଷ୍ଠିତ ହୋଇଥିଲା?<br>(Where was the Maritime Financing Summit 2025 held?)",
-                options: [
-                    "ମୁମ୍ବାଇ | Mumbai",
-                    "କୋଲକାତା | Kolkata",
-                    "ନୂତନଦିଲ୍ଲୀ | New Delhi",
-                    "ଚେନ୍ନାଇ | Chennai"
-                ],
-                correct: 2,
-                explanation: "ନୀଳ ଅର୍ଥନୀତିକୁ ବୃଦ୍ଧି କରିବା ଉଦ୍ଦେଶ୍ୟରେ ଏହି ସମିତି ନୂତନଦିଲ୍ଲୀରେ ଅନୁଷ୍ଠିତ ହୋଇଥିଲା।"
-            },
-            {
-                question: "IRDAI-ଅଧ୍ୟକ୍ଷ ନୂଆ କିଏ ନିଯୁକ୍ତ ହୋଇଛନ୍ତି?<br>(Who has been appointed as the new Chairman of IRDAI?)",
-                options: [
-                    "ହେମନ୍ତ ଶର୍ମା | Hemant Sharma",
-                    "ଅଜୟ ସେଠ୍ | Ajay Seth",
-                    "ରଜନୀଶ କୁମାର | Rajnish Kumar",
-                    "ରାକେଶ ଶର୍ମା | Rakesh Sharma"
-                ],
-                correct: 1,
-                explanation: "ଭାରତୀୟ ବୀମା ନିୟନ୍ତ୍ରକ ଏବଂ ବିକାଶ ପ୍ରାଧିକାରଣ (IRDAI) ର ଅଧ୍ୟକ୍ଷ ଭାବରେ ଅଜୟ ସେଠ୍ ନିଯୁକ୍ତ ହୋଇଛନ୍ତି।"
-            },
-            {
-                question: "UNGCNI ନୂଆ ଅଧ୍ୟକ୍ଷ କିଏ?<br>(Who has been appointed as the new President of UNGCNI?)",
-                options: [
-                    "ରଚନା ସିଂହ | Rachna Singh",
-                    "ବୈଶାଳୀ ନିଗମ ସିନ୍ହା | Vaishali Nigam Sinha",
-                    "ମନିଷା ଶର୍ମା | Manisha Sharma",
-                    "ରେଖା ଵର୍ମା | Rekha Verma"
-                ],
-                correct: 1,
-                explanation: "ବୈଶାଳୀ ନିଗମ ସିନ୍ହା ଯୁକ୍ତ ଜାତିସଂଘ ଗ୍ଲୋବାଲ୍ କମ୍ପାକ୍ଟ୍ ନେଟୱର୍କ୍ ଇଣ୍ଡିଆ (UNGCNI) ର ନୂଆ ଅଧ୍ୟକ୍ଷ।"
-            },
-            {
-                question: "କୃଷି ସମୃଦ୍ଧି ଯୋଜନା କେଉଁ ରାଜ୍ୟରେ ଆରମ୍ଭ ହୋଇଛି?<br>(In which state was the Krishi Samriddhi Yojana launched?)",
-                options: [
-                    "ପଞ୍ଜାବ | Punjab",
-                    "ଉତ୍ତର ପ୍ରଦେଶ୍ | Uttar Pradesh",
-                    "ମହାରଷ୍ଟ୍ର | Maharashtra",
-                    "ଗୁଜରାଟ୍ | Gujarat"
-                ],
-                correct: 2,
-                explanation: "ମହାରଷ୍ଟ୍ର ସରକାର କୃଷକମାନଙ୍କୁ ସଶକ୍ତ କରିବା ପାଇଁ ଏହି ଯୋଜନା ଆରମ୍ଭ କରିଛି।"
-            },
-            {
-                question: "ସମୁଦ୍ର ନାଗ ପୋକର ଏକ ନୂଆ ପ୍ରଜାତି କେଉଁ ଦେଶରେ ଖୋଜାଯାଇଛି?<br>(A new species of sea slug was discovered in which country?)",
-                options: [
-                    "ଭାରତ | India",
-                    "ଅଷ୍ଟ୍ରେଲିଆ | Australia",
-                    "ଇଣ୍ଡୋନେସିଆ | Indonesia",
-                    "ଜାପାନ | Japan"
-                ],
-                correct: 2,
-                explanation: "ଇଣ୍ଡୋନେସିଆ ତଟରେ ଏକ ନୂଆ ସମୁଦ୍ର ନାଗ ପୋକର ପ୍ରଜାତି ଖୋଜିପାଇଁ ଗଲା।"
-            },
-            {
-                question: "୨୬ ଜୁଲାଇ ୨୦୨୫ କେଉଁ ଦେଶର ୬୦ତମ ସ୍ୱାଧୀନତା ଦିବସ ପାଳନ ହେଲା?<br>(Which country celebrated its 60th Independence Day on 26 July 2025?)",
-                options: [
-                    "ଶ୍ରୀଲଙ୍କା | Sri Lanka",
-                    "ମାଲଦିଭ୍ସ | Maldives",
-                    "ନେପାଳ | Nepal",
-                    "ଭୁଟାନ୍ | Bhutan"
-                ],
-                correct: 1,
-                explanation: "ମାଲଦିଭ୍ସ ୨୬ ଜୁଲାଇ ୨୦୨୫ରେ ୬୦ତମ ସ୍ୱାଧୀନତା ଦିବସ ପାଳନ କଲା।"
-            },
-            {
-                question: "ଫିଡେ ମହିଳା ବିଶ୍ୱକପ୍ ଫାଇନାଲ୍‍ରେ ପହଁଚିଥିବା ପ୍ରଥମ ଭାରତୀୟ ଖେଳାଳି କିଏ?<br>(Who became the first Indian player to reach the final of the FIDE Women's World Cup?)",
-                options: [
-                    "ହରିକା ଦ୍ରୋଣାଭଲି | Harika Dronavalli",
-                    "କୋନେରୁ ହଁପି | Koneru Humpy",
-                    "ବୈଶାଳୀ ଆର୍ | Vaishali R",
-                    "ଦିଭ୍ୟା ଦେଶମୁଖ୍ | Divya Deshmukh"
-                ],
-                correct: 3,
-                explanation: "ଦିଭ୍ୟା ଦେଶମୁଖ୍ ଫିଡେ ମହିଳା ବିଶ୍ୱକପ୍ ଫାଇନାଲ୍‍ରେ ବସିଥିବା ପ୍ରଥମ ଭାରତୀୟ ମହିଳା ଖେଳାଳି।"
-            },
-            {
-                question: "'ଦଳିତ ଏବଂ ମହିଳା ଉନ୍ନୟନରେ ଡ଼ଃ ଅମ୍ବେଡ୍କରଙ୍କ ଅବଦାନ' ବହି କିଏ ଲେଖିଛନ୍ତି?<br>(Who is the author of 'Dalit aur Mahila Utthan Mein Dr. Ambedkar ka Yogdan' book?)",
-                options: [
-                    "ଅରୁଣ କୁମାର ଯାଦବ | Arun Kumar Yadav",
-                    "ବିକ୍ରମ ସିଂହ ଡୁମୋଲିଆ | Vikram Singh Dumolia",
-                    "ନିତିନ ଶର୍ମା | Nitin Sharma",
-                    "ସୀମା ତ୍ରିପାଠୀ | Seema Tripathi"
-                ],
-                correct: 1,
-                explanation: "ବିକ୍ରମ ସିଂହ ଡୁମୋଲିଆ 'ଦଳିତ ଏବଂ ମହିଳା ଉନ୍ନୟନରେ ଡ଼ଃ ଅମ୍ବେଡ୍କରଙ୍କ ଅବଦାନ' ବହିର ଲେଖକ।"
-            }
-        ];
+<div class="news-tile">
+    ୬-ଅଗଷ୍ଟ ୯ ପରେ ଖୋଲିବ ସୁଭଦ୍ରା ପୋର୍ଟାଲ, ୨୧ ବର୍ଷ ହୋଇଥିବା ଯୁବତୀ ଓ ମହିଳା କରିପାରିବେ ଆବେଦନ।
+</div>
 
-        let currentQuestion = 0;
-        let userAnswers = [];
-        let score = 0;
+<div class="news-tile">
+    ୭-ଭିଜିଲାନ୍ସ ଜାଲରେ ପୁଣି ଜଣେ ସହକାରୀ ଯନ୍ତ୍ରୀ, ଭୁବନେଶ୍ଵର ଆର ଆଣ୍ଡ୍‌ ବି ଡିଭିଜନ୍-୩ ର ସହକାରୀ ଯନ୍ତ୍ରୀ ଅଶୋକ କୁମାର ପଣ୍ଡାଙ୍କ ଘରେ ଭିଜିଲାନ୍ସ ଚଢାଉ।
+</div>
 
-        function initQuiz() {
-            displayQuestion();
-            updateProgress();
-            updateCounter();
-        }
+<div class="news-tile">
+    ୮-ଭୁବନେଶ୍ୱର:ଥରେ ବ୍ୟବହାର ହୋଇଯାଇଥିବା ପ୍ଲାଷ୍ଟିକ ବୋତଲ ମନା,ଏକକ ବ୍ୟବହାର ପ୍ଲାଷ୍ଟିକ ଉପରେ ଲାଗିଲା କଟକଣା।
+</div>
 
-        function displayQuestion() {
-            const quizContent = document.getElementById('quizContent');
-            const question = questions[currentQuestion];
-            
-            quizContent.innerHTML = `
-                <div class="question-card active">
-                    <div class="question">${question.question}</div>
-                    <div class="options">
-                        ${question.options.map((option, index) => `
-                            <div class="option" onclick="selectOption(${index})">${option}</div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            
-            // Show previous answer if exists
-            if (userAnswers[currentQuestion] !== undefined) {
-                const options = document.querySelectorAll('.option');
-                options[userAnswers[currentQuestion]].classList.add('selected');
-                document.getElementById('nextBtn').disabled = false;
-            }
-        }
+<div class="news-tile">
+    ୯-ଯୁବପିଢ଼ିଙ୍କୁ ଘାରିଛି ରିଲ୍ସ ନିଶା : ଚଳନ୍ତା ଗାଡ଼ିରେ ମୋବାଇଲ ଧରି କରୁଛନ୍ତି ଭିଡିଓ , ନଜର ରଖିଛି RTO।ରୁ ପରାମର୍ଶ।
+</div>
 
-        function selectOption(selectedIndex) {
-            const options = document.querySelectorAll('.option');
-            
-            // Remove previous selection
-            options.forEach(option => option.classList.remove('selected'));
-            
-            // Add selection to clicked option
-            options[selectedIndex].classList.add('selected');
-            
-            // Store user answer
-            userAnswers[currentQuestion] = selectedIndex;
-            
-            // Enable next button
-            document.getElementById('nextBtn').disabled = false;
-        }
+<div class="news-tile">
+    ୧୦-କେନ୍ଦ୍ରକୁ ଡେପୁଟେସନରେ ଯିବେ ଆର୍.ପି. କୋଚେ ଏବଂ ଯଶୱନ୍ତ କୁମାର ଜେଠୱା; ଦୁଇ ବରିଷ୍ଠ ଓଡ଼ିଶା କ୍ୟାଡର ଆଇପିଏସ ଅଧିକାରୀଙ୍କୁ କେନ୍ଦ୍ରୀୟ ନିଯୁକ୍ତି ପାଇଁ ମନୋନୀତ।
+</div>
 
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                displayQuestion();
-                updateProgress();
-                updateCounter();
-                updateNavButtons();
-            } else {
-                finishQuiz();
-            }
-        }
+<div class="news-tile">
+    ୧୧-OAS ଅଫିସର ସାର୍ଥକ ସୌରଭ ମହାପାତ୍ରଙ୍କ ନାଁରେ ଥାନାରେ ଅଭିଯୋଗ କଲେ ପତ୍ନୀ : ନବଜାତକ ପୁଅ ଓ ପତ୍ନୀଙ୍କୁ ମେଡିକାଲରେ ଛାଡ଼ି ପଳାଇଥିଲେ ସ୍ବାମୀ।
+</div>
 
-        function previousQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                displayQuestion();
-                updateProgress();
-                updateCounter();
-                updateNavButtons();
-            }
-        }
+<div class="news-tile">
+    ୧୨-ଅଙ୍ଗନବାଡ଼ି ପାଇଁ ଆସିବ ‘ଅସମ୍’ ଆପ୍,ଆପ୍‌ ଦ୍ୱାରା ସାଧାରଣ ଲୋକ ଏବଂ ଅଭିଭାବକ ନିଜର ମତାମତ ଦେଇପାରିବେ । 
+</div>
 
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / questions.length) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
+<div class="news-tile">
+    ୩-ଓଟିଇଟି ପ୍ରଶ୍ନପତ୍ର ଲିକ୍ ମାମଲା:୬ ଜଣ ଗିରଫ, ବୋର୍ଡ ଉପସଭାପତିଙ୍କ ଲାପଟପ୍ ରୁ ପ୍ରଘଟ,ଡାଟା ଏଣ୍ଟ୍ରି ଅପରେଟର ଜିତନ ମହାରଣା ମୁଖ୍ୟ ଅଭିଯୁକ୍ତ। ।
+</div>
 
-        function updateCounter() {
-            document.getElementById('questionCounter').textContent = 
-                `ପ୍ରଶ୍ନ ${currentQuestion + 1} of ${questions.length}`;
-        }
+<div class="news-tile">
+    ୪-ବନ୍ୟା ପାଣିରେ ‘ସାପ କାମୁଡାକୁ’ ଡର; ଜନସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ସତର୍କ ସୂଚନା ଜାରି,ସାପ କାମୁଡ଼ିଲେ ତୁରନ୍ତ ମେଡିକାଲ ଯିବାକୁ ସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ପରାମର୍ଶ।
+</div>
 
-        function updateNavButtons() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            
-            if (currentQuestion === questions.length - 1) {
-                document.getElementById('nextBtn').textContent = 'Finish Quiz';
-                document.getElementById('nextBtn').disabled = userAnswers[currentQuestion] === undefined;
-            } else {
-                document.getElementById('nextBtn').textContent = 'Next';
-                document.getElementById('nextBtn').disabled = userAnswers[currentQuestion] === undefined;
-            }
-        }
+<div class="news-tile">
+    ୫-ଭୁବନେଶ୍ୱର:୧୬ରୁ ଭୁବନେଶ୍ୱର -ଝାରସୁଗୁଡା ବିମାନ ସେବା ଆରମ୍ଭ, ସପ୍ତାହକୁ ୫ ଦିନ ଚାଲିବ।
+</div>
 
-        function finishQuiz() {
-            calculateScore();
-            showResults();
-        }
+<div class="news-tile">
+    ୧-ଭୁବନେଶ୍ୱର:ବାଲେଶ୍ୱର, ଭଦ୍ରକ ଓ ଯାଜପୁର ଜିଲ୍ଲାର  ବନ୍ୟାରେ ୩୦ ହଜାର ଲୋକ ପ୍ରଭାବିତ,୫୮୬୯ ଜଣ ଲୋକଙ୍କୁ ସୁରକ୍ଷିତ ସ୍ଥାନକୁ ସ୍ଥାନାନ୍ତର, ୭ ଦିନ ପର୍ଯ୍ୟନ୍ତ ଦିଆଯିବ ରନ୍ଧା ଖାଦ୍ୟ।କାର ।
+</div>
 
-        function calculateScore() {
-            score = 0;
-            for (let i = 0; i < questions.length; i++) {
-                if (userAnswers[i] === questions[i].correct) {
-                    score++;
-                }
-            }
-        }
+<div class="news-tile">
+    ୨-ଆରଆଇ ଅମିନ ମିଳିତ ପ୍ରିଲିମ୍‌ ଓ ମୁଖ୍ୟ ପରୀକ୍ଷା ରଦ୍ଦ, ଅଗଷ୍ଟ ୧୩ ସୁଦ୍ଧା ସାନି ବିଜ୍ଞପ୍ତି।ପୂର୍ବରୁ ଆବେଦନ କରିଥିବା ପ୍ରାର୍ଥୀମାନଙ୍କୁ ଆଉ ଆବେଦନ କରିବାକୁ ପଡିବ ନାହିଁ। ଜାରି ।
+</div>
 
-        function showResults() {
-            document.getElementById('quizContent').style.display = 'none';
-            document.getElementById('navButtons').style.display = 'none';
-            document.getElementById('questionCounter').style.display = 'none';
-            
-            const results = document.getElementById('results');
-            results.classList.add('active');
-            
-            // Update score circle
-            const percentage = (score / questions.length) * 100;
-            const angle = (percentage / 100) * 360;
-            document.getElementById('scoreCircle').style.setProperty('--score-angle', angle + 'deg');
-            document.getElementById('scoreText').textContent = `${score}/${questions.length}`;
-            
-            // Show performance message
-            const performance = document.getElementById('performance');
-            let message = '';
-            if (percentage >= 90) {
-                message = 'Excellent! Outstanding performance! 🌟';
-            } else if (percentage >= 80) {
-                message = 'Very Good! Well done! 👏';
-            } else if (percentage >= 70) {
-                message = 'Good! Keep it up! 👍';
-            } else if (percentage >= 60) {
-                message = 'Fair! Room for improvement! 📚';
-            } else {
-                message = 'Keep practicing! You can do better! 💪';
-            }
-            performance.textContent = `${percentage.toFixed(1)}% - ${message}`;
-            
-            // Show explanations
-            showExplanations();
-        }
+<div class="news-tile">
+    ୩-ଓଟିଇଟି ପ୍ରଶ୍ନପତ୍ର ଲିକ୍ ମାମଲା:୬ ଜଣ ଗିରଫ, ବୋର୍ଡ ଉପସଭାପତିଙ୍କ ଲାପଟପ୍ ରୁ ପ୍ରଘଟ,ଡାଟା ଏଣ୍ଟ୍ରି ଅପରେଟର ଜିତନ ମହାରଣା ମୁଖ୍ୟ ଅଭିଯୁକ୍ତ। ।
+</div>
 
-        function showExplanations() {
-            const explanationsDiv = document.getElementById('explanations');
-            let explanationsHTML = '';
-            
-            questions.forEach((question, index) => {
-                const userAnswer = userAnswers[index];
-                const isCorrect = userAnswer === question.correct;
-                const statusIcon = isCorrect ? '✅' : '❌';
-                
-                explanationsHTML += `
-                    <div class="explanation-item">
-                        <div class="explanation-question">
-                            ${statusIcon} Q${index + 1}: ${question.question.replace('<br>', ' ')}
-                        </div>
-                        <div class="explanation-answer">
-                            Correct Answer: ${question.options[question.correct]}
-                        </div>
-                        ${!isCorrect ? `<div style="color: #e74c3c; font-weight: 600; margin-bottom: 8px;">Your Answer: ${question.options[userAnswer]}</div>` : ''}
-                        <div class="explanation-text">
-                            ${question.explanation}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            explanationsDiv.innerHTML = explanationsHTML;
-        }
+<div class="news-tile">
+    ୪-ବନ୍ୟା ପାଣିରେ ‘ସାପ କାମୁଡାକୁ’ ଡର; ଜନସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ସତର୍କ ସୂଚନା ଜାରି,ସାପ କାମୁଡ଼ିଲେ ତୁରନ୍ତ ମେଡିକାଲ ଯିବାକୁ ସ୍ୱାସ୍ଥ୍ୟ ବିଭାଗ ପକ୍ଷରୁ ପରାମର୍ଶ।
+</div>
 
-        function restartQuiz() {
-            currentQuestion = 0;
-            userAnswers = [];
-            score = 0;
-            
-            document.getElementById('quizContent').style.display = 'block';
-            document.getElementById('navButtons').style.display = 'flex';
-            document.getElementById('questionCounter').style.display = 'block';
-            document.getElementById('results').classList.remove('active');
-            
-            initQuiz();
-        }
+<div class="news-tile">
+    ୫-ଭୁବନେଶ୍ୱର:୧୬ରୁ ଭୁବନେଶ୍ୱର -ଝାରସୁଗୁଡା ବିମାନ ସେବା ଆରମ୍ଭ, ସପ୍ତାହକୁ ୫ ଦିନ ଚାଲିବ।
+</div>
 
-        // Initialize the quiz when page loads
-        window.onload = function() {
-            initQuiz();
-        };
-    </script>
+
 </body>
 </html>
